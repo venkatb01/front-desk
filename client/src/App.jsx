@@ -5,6 +5,8 @@ import Header from './components/header'
 import RoomSelectionPage from './components/roomSelection'
 import Footer from './components/footer'
 import RegisterPage from './components/auth/register'
+import BookingConfirmationPage from './components/bookingConfirmation'
+import PaymentPage from './components/payment'
 
 function App() {
   return (
@@ -16,9 +18,11 @@ function App() {
       </BrowserRouter> */}
       <LoginPage/>
       <RegisterPage/>
-      {/* <Header/>
+      <Header/>
       <RoomSelectionPage/>
-      <Footer/> */}
+      <Footer/>
+      <BookingConfirmationPage/>
+      <PaymentPage/>
     </div>
   )
 }
