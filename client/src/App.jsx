@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div>
-      FRONTDESK
+       
     </div>
   )
 }
