@@ -18,19 +18,19 @@ function App() {
 <AppProvider>
   <BrowserRouter>
     <Routes>
-      {/* Auth routes */}
+      
       <Route path="/login" element={<LoginPage />} />
         <Route path="/guest-register" element={<GuestRegisterPage />} />
         <Route path="/admin/register" element={<RegisterPage />} />
 
-      {/* User Routes with Layout */}
+      
       <Route path="/" element={<UserLayout />}>
           <Route index element={<Navigate to="rooms" />} />
           <Route path="rooms" element={<RoomSelectionPage />} />
           <Route path="payment" element={<PaymentPage />} />
           <Route path="confirmation" element={<BookingConfirmationPage />} />
           <Route path="reservations" element={<ReservationsPage />} />
-        </Route>
+      </Route>
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>

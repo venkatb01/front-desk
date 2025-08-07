@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, User, Mail, Lock, Phone, Hotel, UserCheck } from 'lucide-react';
-
+import { Eye, EyeOff, User, Mail, Lock, Phone, Hotel, UserCheck, Axis3DIcon } from 'lucide-react';
+import { useContext } from 'react';
+import {useAppContext} from "../../../context/AppContext"
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {axios}=useAppContext();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -23,9 +25,18 @@ const RegisterPage = () => {
     });
   };
 
-  const handleSubmit = () => {
-    // Registration logic will be implemented later
-    console.log('Registration attempt:', formData);
+  const handleSubmit = async () => {
+     try{
+         console.log("Inside handler")
+         const {data}=await axios.post("/api/auth/register",formData);
+         if(data.success){
+           console.log(data.message);
+         }else{
+          console.log(data.message);
+         }
+     }catch(error){
+         console.log(error.message);
+     }
   };
 
   return (

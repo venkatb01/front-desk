@@ -46,6 +46,22 @@ const guestSchema = new mongoose.Schema({
     amountPaid: Number,
     feedback: String
   }],
+  currentStay: {
+  checkInDate: Date,
+  expectedCheckOutDate: Date,
+  roomNumber: String,
+  ratePerNight: Number,
+  isCheckedOut: { type: Boolean, default: false }
+},
+ folio: [{
+    date: String, // use ISO string "YYYY-MM-DD"
+    description: String,
+    amount: Number,
+    type: {
+      type: String,
+      enum: ['debit', 'credit']
+    }
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Guest', guestSchema);

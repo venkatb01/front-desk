@@ -1,78 +1,56 @@
 const mongoose = require('mongoose');
 
-const roomSchema = new mongoose.Schema({
-  number: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true
-  },
-  roomType: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'RoomType',
-    required: true
-  },
-  floor: {
-    type: Number,
-    required: true
-  },
-  capacity: {
-    adults: Number,
-    children: Number
-  },
-  bedType: {
-    type: String,
-    enum: ['single', 'double', 'queen', 'king', 'twin']
-  },
-  amenities: [String],
-  baseRate: {
-    type: Number,
-    required: true
-  },
+const housekeepingTaskSchema = new mongoose.Schema({
+  task: String,
+  assignedTo: String, // staff ID or name
+  scheduledDate: Date,
   status: {
     type: String,
-    enum: ['available', 'occupied', 'out_of_order', 'maintenance'],
-    default: 'available'
+    enum: ['Pending', 'In Progress', 'Completed'],
+    default: 'Pending'
   },
-  housekeepingStatus: {
+  notes: String
+}, { timestamps: true });
+
+const maintenanceRequestSchema = new mongoose.Schema({
+  issue: String,
+  reportedBy: String,
+  reportedDate: {
+    type: Date,
+    default: Date.now
+  },
+  resolvedDate: Date,
+  status: {
     type: String,
-    enum: ['clean', 'dirty', 'inspected', 'out_of_order'],
-    default: 'clean'
+    enum: ['Open', 'In Progress', 'Resolved'],
+    default: 'Open'
   },
-  maintenanceIssues: [{
-    issue: String,
-    priority: {
-      type: String,
-      enum: ['low', 'medium', 'high', 'urgent']
-    },
-    reportedDate: Date,
-    resolvedDate: Date,
-    isResolved: {
-      type: Boolean,
-      default: false
-    }
-  }],
-  images: [String],
-  isActive: {
-    type: Boolean,
-    default: true
+  notes: String
+}, { timestamps: true });
+
+const roomSchema = new mongoose.Schema({
+  roomNumber: {
+    type: String,
+    required: true,
+    unique: true
   },
-  lastCleaned: Date,
-  lastMaintained: Date,
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+
+  status: {
+    type: String,
+    enum: ['Clean', 'Dirty', 'Occupied', 'Vacant', 'Maintenance'],
+    default: 'Dirty'
   },
-  modifiedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+
+  housekeepingTasks: [housekeepingTaskSchema],
+
+  maintenanceRequests: [maintenanceRequestSchema],
+
+  inventory: {
+    towels: { type: Number, default: 0 },
+    bedsheets: { type: Number, default: 0 },
+    soap: { type: Number, default: 0 },
+    shampoo: { type: Number, default: 0 }
   }
-}, {
-  timestamps: true
-});
+}, { timestamps: true });
 
-// Compound index for room search
-roomSchema.index({ roomType: 1, status: 1, floor: 1 });
-
-module.exports = mongoose.model('Room', roomSchema);
+module.exports = mongoose.model("Room", roomSchema);

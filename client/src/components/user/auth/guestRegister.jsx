@@ -3,14 +3,14 @@ import { User, Mail, Phone, Calendar, MapPin, CreditCard, Bed, Users, Hotel } fr
 
 const GuestRegisterPage = () => {
   const [formData, setFormData] = useState({
-    // Personal Information
+    
     name: '',
     email: '',
     phone: '',
     DOB: '',
     nationality: '',
     
-    // Address
+  
     address: {
       street: '',
       city: '',
@@ -19,14 +19,14 @@ const GuestRegisterPage = () => {
       country: ''
     },
     
-    // Information/ID
+    
     information: {
       aadharNumber: '',
       idType: '',
       idNumber: ''
     },
     
-    // Room Preferences
+    
     roomPreferences: {
       bedType: '',
       smoking: false,
@@ -34,7 +34,7 @@ const GuestRegisterPage = () => {
       view: ''
     },
     
-    // References
+    
     references: [{
       name: '',
       contact: '',
@@ -59,7 +59,7 @@ const GuestRegisterPage = () => {
         return newData;
       });
     } else if (name.includes('[')) {
-      // Handle array notation like references[0].name
+   
       const match = name.match(/(\w+)\[(\d+)\]\.(\w+)/);
       if (match) {
         const [, arrayName, index, prop] = match;
@@ -550,7 +550,7 @@ const GuestRegisterPage = () => {
 
         {/* Footer */}
         <div className="text-center mt-8 text-gray-500 text-sm">
-          <p>&copy; 2024 Hotel Management System. All rights reserved.</p>
+          <p>&copy; 2025 Hotel Management System. All rights reserved.</p>
         </div>
       </div>
     </div>

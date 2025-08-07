@@ -14,20 +14,22 @@ exports.registerGuest = async (req, res) => {
 exports.bookRoom = async (req, res) => {
   try {
     const { guestId } = req.params;
-    const { checkInDate, checkOutDate, roomNumber, amountPaid } = req.body;
+    const { checkInDate, checkOutDate, roomNumber, ratePerNight } = req.body;
 
     const guest = await Guest.findById(guestId);
     if (!guest) return res.status(404).json({ success: false, message: "Guest not found" });
 
-    guest.stayHistory.push({
+    // Set currentStay
+    guest.currentStay = {
       checkInDate,
-      checkOutDate,
+      expectedCheckOutDate: checkOutDate,
       roomNumber,
-      amountPaid
-    });
+      ratePerNight,
+      isCheckedOut: false
+    };
 
     await guest.save();
-    res.status(200).json({ success: true, data: guest });
+    res.status(200).json({ success: true, message: "Room booked", data: guest });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

@@ -8,7 +8,7 @@ export default function UserLayout() {
     <div>
       <Header />
       <main>
-        <Outlet /> {/* All nested user pages will render here */}
+        <Outlet /> 
       </main>
       <Footer />
     </div>

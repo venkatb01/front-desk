@@ -8,7 +8,7 @@ export default function AdminLayout() {
     <div>
       <Header />
       <main>
-        <Outlet /> {/* Renders the nested admin routes here */}
+        <Outlet />
       </main>
       <Footer />
     </div>

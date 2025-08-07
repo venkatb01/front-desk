@@ -33,7 +33,7 @@ const serviceSchema = new mongoose.Schema({
       endTime: String
     }],
     capacity: Number,
-    advanceBooking: Number // hours required
+    advanceBooking: Number 
   },
   requiredStaff: [{
     role: String,
