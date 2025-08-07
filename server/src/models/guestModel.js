@@ -36,7 +36,6 @@ const guestSchema = new mongoose.Schema({
   },
   roomPreferences: {
     bedType: String,            
-    smoking: Boolean,
     floorPreference: String,    
     view: String               
   },
@@ -47,15 +46,6 @@ const guestSchema = new mongoose.Schema({
     amountPaid: Number,
     feedback: String
   }],
-  references: [{
-    name: String,
-    contact: String,
-    relation: String
-  }],
-  vipStatus: {
-    type: Boolean,
-    default: false
-  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Guest', guestSchema);
