@@ -15,5 +15,5 @@ connectDB();
 
 
 app.listen(PORT,()=>{
-    console.log(`Server started running at http://localhost:${PORT}`)
+    console.log(`Server started running at http://localhost:₹{PORT}`)
 });
