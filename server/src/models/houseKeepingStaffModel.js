@@ -20,7 +20,8 @@ const housekeepingStaffSchema = new mongoose.Schema({
     type: String,
     enum: ['Morning', 'Afternoon', 'Night']
   },
-  performance: performanceMetricsSchema
+  performance: performanceMetricsSchema,
+  assignedTasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'HousekeepingTask' }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('HousekeepingStaff', housekeepingStaffSchema);

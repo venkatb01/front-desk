@@ -1,4 +1,8 @@
 const HousekeepingStaff = require("../models/houseKeepingStaffModel.js");
+const Room=require("../models/roomModel.js")
+const HousekeepingTask = require('../models/houseKeepingTaskModel.js'); // Adjust path if needed
+
+const mongoose = require('mongoose');
 
 exports.addStaff = async (req, res) => {
   try {
@@ -9,6 +13,8 @@ exports.addStaff = async (req, res) => {
   }
 };
 
+
+
 exports.getAllStaff = async (req, res) => {
   try {
     const staffList = await HousekeepingStaff.find();
@@ -18,35 +24,31 @@ exports.getAllStaff = async (req, res) => {
   }
 };
 
-exports.updateTaskStatus = async (req, res) => {
-  try {
-    const { staffId, taskId } = req.params;
-    const { status } = req.body;
 
-    const staff = await HousekeepingStaff.findOne({ staffId });
-    const task = staff.assignedTasks.find(t => t.taskId.toString() === taskId);
-    if (task) {
-      task.status = status;
-      await staff.save();
-    }
 
-    res.status(200).json({ success: true, message: "Task status updated." });
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
 
 exports.getPerformance = async (req, res) => {
   try {
     const { staffId } = req.params;
-    const staff = await HousekeepingStaff.findOne({ staffId });
 
-    const completed = staff.assignedTasks.filter(t => t.status === 'Completed').length;
-    const total = staff.assignedTasks.length;
+    if (!mongoose.Types.ObjectId.isValid(staffId)) {
+      return res.status(400).json({ success: false, message: 'Invalid staff ID' });
+    }
+
+    const staff = await HousekeepingStaff.findById(staffId);
+    if (!staff) {
+      return res.status(404).json({ success: false, message: "Staff not found" });
+    }
+
+    const tasks = await HousekeepingTask.find({ assignedTo: staff._id });
+
+    const completed = tasks.filter(task => task.status === 'Completed').length;
+    const total = tasks.length;
 
     res.status(200).json({
       success: true,
       performance: {
+        staffName: staff.name,
         totalTasks: total,
         completedTasks: completed,
         completionRate: total ? ((completed / total) * 100).toFixed(2) + "%" : "0%"

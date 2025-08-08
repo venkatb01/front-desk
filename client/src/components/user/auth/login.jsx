@@ -18,8 +18,8 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Login logic will be implemented later
-    console.log('Login attempt:', formData);
+    
+  
   };
 
   return (

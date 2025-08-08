@@ -10,6 +10,7 @@ const maintainanceRouter=require("./routes/maintainanceRoutes.js");
 const lostItemRouter=require("./routes/lostItemRoutes.js");
 const inventoryRouter=require("./routes/inventoryRoutes.js");
 const housekeepingstaffRouter=require("./routes/houseKeepingStaffRoutes.js")
+const housekeepingtaskRouter=require("./routes/houseKeepingTasks.js")
 const app=express();
 const PORT=process.env.PORT;
 
@@ -29,7 +30,7 @@ app.use("/api/room/maintainance",maintainanceRouter);
 app.use("/api/lost/",lostItemRouter);
 app.use("/api/inventory",inventoryRouter);
 app.use("/api/housekeepingstaff",housekeepingstaffRouter)
-
+app.use("/api/housekeepingtask",housekeepingtaskRouter);
 
 app.listen(PORT,()=>{
     console.log(`Server started running at http://localhost:${PORT}`)

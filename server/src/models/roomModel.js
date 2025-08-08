@@ -1,24 +1,4 @@
-// models/Room.js
 const mongoose = require('mongoose');
-
-const housekeepingTaskSchema = new mongoose.Schema({
-  task: {
-    type: String,
-    required: true
-  },
-  assignedTo: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'HousekeepingStaff',
-    required: true
-  },
-  scheduledDate: Date,
-  status: {
-    type: String,
-    enum: ['Pending', 'In Progress', 'Completed'],
-    default: 'Pending'
-  },
-  notes: String
-}, { timestamps: true });
 
 const maintenanceRequestSchema = new mongoose.Schema({
   issue: {
@@ -50,7 +30,6 @@ const roomSchema = new mongoose.Schema({
     enum: ['Clean', 'Dirty', 'Occupied', 'Vacant', 'Maintenance'],
     default: 'Dirty'
   },
-  housekeepingTasks: [housekeepingTaskSchema],
   maintenanceRequests: [maintenanceRequestSchema],
   inventory: {
     towels: { type: Number, default: 0 },

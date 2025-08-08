@@ -19,7 +19,6 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    console.log('Login attempt:', formData);
   };
 
   return (

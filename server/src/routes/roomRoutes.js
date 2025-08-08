@@ -14,7 +14,7 @@ router.get("/", getAllRooms);
 router.post("/addRoom",addRoom);
 router.put("/status/:roomId", updateRoomStatus);
 
-router.post("/housekeeping/:roomId", addHousekeepingTask);
+// router.post("/housekeeping/:roomId", addHousekeepingTask);
 
 router.post("/:roomId/report-maintenance", reportMaintenance);
 

@@ -1,5 +1,5 @@
 const Room = require('../models/roomModel.js'); 
-
+const HousekeepingStaff=require("../models/houseKeepingStaffModel.js")
 exports.addRoom = async (req, res) => {
   try {
     const { roomNumber, status, inventory } = req.body;
@@ -47,22 +47,38 @@ exports.updateRoomStatus = async (req, res) => {
 };
 
 
-exports.addHousekeepingTask = async (req, res) => {
+
+exports.addHousekeepingTask= async (req, res) => {
   try {
     const { roomId } = req.params;
-    const { task, assignedTo, scheduledDate } = req.body;
+    const { task, assignedTo, scheduledDate, notes } = req.body;
 
-    const room = await Room.findById(roomId);
-    room.housekeepingTasks.push({ task, assignedTo, scheduledDate });
+    const room = await Room.findOne({ _id:roomId });
+    if (!room) return res.status(404).json({ success: false, message: "Room not found" });
+
+
+    room.housekeepingTasks.push({
+      task,
+      assignedTo,
+      scheduledDate,
+      notes,
+      status: 'Pending'
+    });
+
     await room.save();
 
-    res.json({ success: true, message: "Task added" });
-  } catch (error) {
-    res.status(500).json({ success:false,
-       message:error.message
+    if (assignedTo) {
+      await HousekeepingStaff.findByIdAndUpdate(assignedTo, {
+        $inc: { "performance.tasksPending": 1 }
       });
+    }
+
+    res.status(201).json({ success: true, message: "Task added and assigned", room });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 
 exports.reportMaintenance = async (req, res) => {
