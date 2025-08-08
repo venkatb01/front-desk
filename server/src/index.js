@@ -6,7 +6,7 @@ const guestRouter = require("./routes/guestRoutes.js");
 const authRouter = require("./routes/authRoutes.js");
 const folioRouter = require("./routes/folioRoutes.js");
 const roomRouter = require("./routes/roomRoutes.js");
-const maintainanceRouter=require("./routes/maintainanceRoutes.js");
+const maintenanceRouter=require("./routes/maintenanceRoutes.js");
 const lostItemRouter=require("./routes/lostItemRoutes.js");
 const inventoryRouter=require("./routes/inventoryRoutes.js");
 const housekeepingstaffRouter=require("./routes/houseKeepingStaffRoutes.js")
@@ -26,7 +26,7 @@ app.use("/api/auth/",authRouter);
 app.use("/api/guest/",guestRouter);
 app.use("/api/folio/",folioRouter);
 app.use("/api/room/",roomRouter);
-app.use("/api/room/maintainance",maintainanceRouter);
+app.use("/api/room/maintenance",maintenanceRouter);
 app.use("/api/lost/",lostItemRouter);
 app.use("/api/inventory",inventoryRouter);
 app.use("/api/housekeepingstaff",housekeepingstaffRouter)

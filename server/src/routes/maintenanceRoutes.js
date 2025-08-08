@@ -4,7 +4,7 @@ const {
   createRequest,
   updateRequestStatus,
   getRequests
-} = require("../controllers/maintainanceController.js");
+} = require("../controllers/maintenanceController.js");
 
 
 router.post("/:roomId", createRequest);

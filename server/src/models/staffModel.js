@@ -30,7 +30,7 @@ const StaffSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'receptionist', 'housekeeping'],
+    enum: ['admin', 'receptionist', 'housekeeping',"front-desk"],
     required: true
   },
 }, {
