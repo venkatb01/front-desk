@@ -18,10 +18,22 @@ const LoginPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  
+  const handleSubmit = async () => {
+    try {
+      const {data} = await axios.post(`/api/auth/login`, formData);
+      if(data.success){
+        toast.success(data.message);
+      }else{
+        toast.error(data.message);
+      }
     
-  };
+    } catch (error) {
+      console.error('Login error:', error)
+      toast.error(error.message);
+    }
+  }
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">

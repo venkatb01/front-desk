@@ -1,20 +1,25 @@
 import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import RoomSelectionPage from './components/common/roomSelection'
-import BookingConfirmationPage from './components/user/bookingConfirmation'
-import PaymentPage from './components/user/payment'
-import ReservationsPage from './components/user/reservationPage'
-import GuestsPage from './components/admin/guestsPage'
-import GuestRegisterPage from './components/user/auth/guestRegister'
-import AdminLayout from './layouts/adminLayout'
+import RoomSelectionPage from './components/common/RoomSelection'
+import BookingConfirmationPage from './components/user/BookingConfirmation'
+import PaymentPage from './components/user/Payment'
+import ReservationsPage from './components/user/ReservationPage'
+import GuestsPage from './components/admin/GuestsPage'
+import GuestRegisterPage from './components/user/auth/GuestRegister'
+import AdminLayout from './layouts/AdminLayout'
 import LoginPage from './components/user/auth/Login'
-import RegisterPage from './components/admin/auth/register'
-import UserLayout from './layouts/userLayout'
+// import RegisterPage from './components/admin/auth/Register'
+import UserLayout from './layouts/UserLayout'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AppProvider } from './context/AppContext'
 
 function App() {
   return (
 <>
+  <AppProvider>
   <BrowserRouter>
+    <ToastContainer />
     <Routes>
       
       <Route path="/login" element={<LoginPage />} />
@@ -39,7 +44,7 @@ function App() {
 
     </Routes>
   </BrowserRouter>
-
+  </AppProvider>
 </>
   )
 }

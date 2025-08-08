@@ -1,48 +1,29 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios"
+import { toast } from "react-toastify";
+axios.defaults.baseURL=import.meta.env.VITE_BASE_URL;
 
-// Load from .env
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-const AuthContext = createContext()
+const AppContext=createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [token, setToken] = useState(null)
+export const AppProvider=({children})=>{
+   
+    const[token,setToken]=useState(null);
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user'))
-    const storedToken = localStorage.getItem('token')
 
-    if (storedUser && storedToken) {
-      setUser(storedUser)
-      setToken(storedToken)
-    }
-  }, [])
+    useEffect(()=>{
+        if(token){
+            setToken(token);
+            axios.defaults.headers.common['Authorization']=`Bearer ${token}`
+        }
+    },[]);
 
-  useEffect(() => {
-    if (user && token) {
-      localStorage.setItem('user', JSON.stringify(user))
-      localStorage.setItem('token', token)
-    } else {
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
-    }
-  }, [user, token])
-
-  const login = (userData, jwtToken) => {
-    setUser(userData)
-    setToken(jwtToken)
-  }
-
-  const logout = () => {
-    setUser(null)
-    setToken(null)
-  }
-
-  return (
-    <AuthContext.Provider value={{ user, token, login, logout, BACKEND_URL }}>
-      {children}
-    </AuthContext.Provider>
-  )
+    return (
+        <AppContext.Provider value={{axios,token,setToken}}>
+            {children}
+        </AppContext.Provider>
+    )
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAppContext=()=>{
+    return useContext(AppContext);
+}

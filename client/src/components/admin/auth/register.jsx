@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, User, Mail, Lock, Phone, Hotel, UserCheck, Axis3DIcon } from 'lucide-react';
 import { useContext } from 'react';
 import {useAppContext} from "../../../context/AppContext"
+import { toast } from 'react-toastify';
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -14,7 +15,6 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: '',
     role: 'front-desk',
-    agreeToTerms: false
   });
 
   const handleInputChange = (e) => {
@@ -24,20 +24,51 @@ const RegisterPage = () => {
       [name]: type === 'checkbox' ? checked : value
     });
   };
-
+  
   const handleSubmit = async () => {
-     try{
-         console.log("Inside handler")
-         const {data}=await axios.post("/api/auth/register",formData);
-         if(data.success){
-           console.log(data.message);
-         }else{
-          console.log(data.message);
-         }
-     }catch(error){
-         console.log(error.message);
-     }
-  };
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    password,
+    confirmPassword,
+    role,
+  } = formData;
+
+  
+  if (password !== confirmPassword) {
+    toast.error("Passwords do not match");
+    return;
+  }
+
+  if (!firstName || !lastName || !email || !phone || !password) {
+    toast.error("Please fill in all fields");
+    return;
+  }
+
+  try {
+    const { data } = await axios.post("/api/auth/register", {
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+      role,
+    });
+
+    if (data.success) {
+      toast.success(data.message);
+      setFormData({firstName:"",lastName:"",phone:"",role:"",password:"",email:""})
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Registration failed");
+    console.error("Registration error:", error);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
@@ -231,32 +262,11 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            {/* Terms & Conditions */}
-            <div className="flex items-center">
-              <input
-                id="agreeToTerms"
-                name="agreeToTerms"
-                type="checkbox"
-                checked={formData.agreeToTerms}
-                onChange={handleInputChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="agreeToTerms" className="ml-2 text-sm text-gray-700">
-                I agree to the{' '}
-                <button className="text-blue-600 hover:text-blue-500 transition-colors">
-                  Terms and Conditions
-                </button>{' '}
-                and{' '}
-                <button className="text-blue-600 hover:text-blue-500 transition-colors">
-                  Privacy Policy
-                </button>
-              </label>
-            </div>
+            
 
-            {/* Register Button */}
+          
             <button
               onClick={handleSubmit}
-              disabled={!formData.agreeToTerms}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               Create Account
