@@ -7,8 +7,8 @@ import ReservationsPage from './components/user/ReservationPage'
 import GuestsPage from './components/admin/GuestsPage'
 import GuestRegisterPage from './components/user/auth/GuestRegister'
 import AdminLayout from './layouts/AdminLayout'
-import LoginPage from './components/user/auth/Login'
-// import RegisterPage from './components/admin/auth/Register'
+import LoginPage from './components/admin/auth/login'
+import RegisterPage from './components/admin/auth/Register'
 import UserLayout from './layouts/UserLayout'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
