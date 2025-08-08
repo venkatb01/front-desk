@@ -7,15 +7,13 @@ import ReservationsPage from './components/user/reservationPage'
 import GuestsPage from './components/admin/guestsPage'
 import GuestRegisterPage from './components/user/auth/guestRegister'
 import AdminLayout from './layouts/adminLayout'
-import LoginPage from './components/user/auth/login'
+import LoginPage from './components/user/auth/Login'
 import RegisterPage from './components/admin/auth/register'
 import UserLayout from './layouts/userLayout'
-import { AppProvider } from './context/AppContext'
 
 function App() {
   return (
 <>
-<AppProvider>
   <BrowserRouter>
     <Routes>
       
@@ -34,13 +32,13 @@ function App() {
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Navigate to="reservations" />} />
         <Route path="guests" element={<GuestsPage />} />
         <Route path="reservations" element={<ReservationsPage />} />
       </Route>
 
     </Routes>
   </BrowserRouter>
-</AppProvider>
 
 </>
   )

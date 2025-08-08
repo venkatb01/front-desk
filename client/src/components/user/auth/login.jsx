@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Lock, Hotel } from 'lucide-react';
+import { useAuth } from '../../../context/AppContext';
+import axios from 'axios'
 
 const LoginPage = () => {
+  const {BACKEND_URL} = useAuth()
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -9,18 +12,41 @@ const LoginPage = () => {
   });
 
   const handleInputChange = (e) => {
-    console.log(e.target.value)
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Login logic will be implemented later
-    console.log('Login attempt:', formData);
-  };
+const handleSubmit = async () => {
+  try {
+    console.log(formData)
+    console.log(BACKEND_URL)
+
+    const response = await axios.post(`${BACKEND_URL}/api/auth/login`, formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = response.data
+    console.log(data)
+
+    // if (response.status === 200) {
+    //   login(data.user, data.token) 
+    // } else {
+    //   alert(data.message || 'Login failed')
+    // }
+  } catch (error) {
+    console.error('Login error:', error)
+
+    if (error.response && error.response.data) {
+      alert(error.response.data.message || 'Login failed')
+    } else {
+      alert('Something went wrong. Please try again later.')
+    }
+  }
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
@@ -95,22 +121,7 @@ const LoginPage = () => {
             </div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember"
-                  name="remember"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember" className="ml-2 text-sm text-gray-700">
-                  Remember me
-                </label>
-              </div>
-              <button className="text-sm text-blue-600 hover:text-blue-500 transition-colors">
-                Forgot password?
-              </button>
-            </div>
+          
 
             {/* Login Button */}
             <button
@@ -129,6 +140,11 @@ const LoginPage = () => {
                 </button>
               </p>
             </div>
+              {/* <div className="flex items-center justify-between">
+              <button className="text-sm text-blue-600 hover:text-blue-500 transition-colors">
+                Forgot password?
+              </button>
+            </div> */}
           </div>
         </div>
 

@@ -10,6 +10,8 @@ const maintainanceRouter=require("./routes/maintainanceRoutes.js");
 const lostItemRouter=require("./routes/lostItemRoutes.js");
 const inventoryRouter=require("./routes/inventoryRoutes.js");
 const housekeepingstaffRouter=require("./routes/houseKeepingStaffRoutes.js")
+require('dotenv').config()
+
 const app=express();
 const PORT=process.env.PORT;
 

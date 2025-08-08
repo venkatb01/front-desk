@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Lock, Hotel } from 'lucide-react';
 
+
 const LoginPage = () => {
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',

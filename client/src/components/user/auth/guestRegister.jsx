@@ -46,6 +46,7 @@ const GuestRegisterPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    console.log(name)
     
     if (name.includes('.')) {
       const keys = name.split('.');
@@ -59,7 +60,6 @@ const GuestRegisterPage = () => {
         return newData;
       });
     } else if (name.includes('[')) {
-   
       const match = name.match(/(\w+)\[(\d+)\]\.(\w+)/);
       if (match) {
         const [, arrayName, index, prop] = match;
