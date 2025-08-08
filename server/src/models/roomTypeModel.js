@@ -31,13 +31,13 @@ const roomTypeSchema = new mongoose.Schema({
     count: Number
   }],
   standardAmenities: [String],
-  size: Number, // in square meters
+  size: Number,
   pricingCategory: {
     type: String,
-    enum: ['economy', 'standard', 'deluxe', 'premium', 'suite'],
+    enum: ['standard', 'deluxe', 'premium'],
     required: true
   },
-  images: [String], // URLs to room images
+  images: [String], 
   isActive: {
     type: Boolean,
     default: true

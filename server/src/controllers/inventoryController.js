@@ -6,18 +6,22 @@ exports.addItem = async (req, res) => {
     await newItem.save();
     res.status(201).json(newItem);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({success:false,error: err.message });
   }
 };
+
+
 
 exports.getAllItems = async (req, res) => {
   try {
     const items = await InventoryItem.find();
     res.json(items);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({success:false,error: err.message });
   }
 };
+
+
 
 exports.getItemById = async (req, res) => {
   try {
@@ -25,7 +29,7 @@ exports.getItemById = async (req, res) => {
     if (!item) return res.status(404).json({ message: "Item not found" });
     res.json(item);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({success:false,error: err.message });
   }
 };
 
@@ -35,7 +39,7 @@ exports.updateItem = async (req, res) => {
     if (!item) return res.status(404).json({ message: "Item not found" });
     res.json(item);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ success:false,error: err.message });
   }
 };
 
@@ -45,7 +49,7 @@ exports.deleteItem = async (req, res) => {
     if (!item) return res.status(404).json({ message: "Item not found" });
     res.json({ message: "Item deleted" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ success:false,error: err.message });
   }
 };
 
@@ -54,7 +58,7 @@ exports.getItemsByCategory = async (req, res) => {
     const items = await InventoryItem.find({ category: req.params.category });
     res.json(items);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({success:false, error: err.message });
   }
 };
 
@@ -71,6 +75,6 @@ exports.decreaseQuantity = async (req, res) => {
     await item.save();
     res.json(item);
     } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({success:false, error: err.message });
   }
 };

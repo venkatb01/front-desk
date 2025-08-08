@@ -7,8 +7,9 @@ const authRouter = require("./routes/authRoutes.js");
 const folioRouter = require("./routes/folioRoutes.js");
 const roomRouter = require("./routes/roomRoutes.js");
 const maintainanceRouter=require("./routes/maintainanceRoutes.js");
-const inventoryRouter=require("./routes/inventoryRoutes.js")
-
+const lostItemRouter=require("./routes/lostItemRoutes.js");
+const inventoryRouter=require("./routes/inventoryRoutes.js");
+const housekeepingstaffRouter=require("./routes/houseKeepingStaffRoutes.js")
 const app=express();
 const PORT=process.env.PORT;
 
@@ -25,7 +26,10 @@ app.use("/api/guest/",guestRouter);
 app.use("/api/folio/",folioRouter);
 app.use("/api/room/",roomRouter);
 app.use("/api/room/maintainance",maintainanceRouter);
+app.use("/api/lost/",lostItemRouter);
 app.use("/api/inventory",inventoryRouter);
+app.use("/api/housekeepingstaff",housekeepingstaffRouter)
+
 
 app.listen(PORT,()=>{
     console.log(`Server started running at http://localhost:${PORT}`)

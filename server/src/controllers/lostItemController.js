@@ -23,7 +23,7 @@ exports.reportLostItem = async (req, res) => {
 
 exports.getLostItems = async (req, res) => {
   try {
-    const items = await LostItem.find().populate('room', 'roomNumber');
+    const items = await LostAndFound.find().populate('room', 'roomNumber');
     res.json({ success: true, data: items });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -35,7 +35,7 @@ exports.claimLostItem = async (req, res) => {
     const { id } = req.params;
     const { claimedBy } = req.body;
 
-    const item = await LostItem.findById(id);
+    const item = await LostAndFound.findById(id);
     if (!item) return res.status(404).json({ success: false, message: 'Item not found' });
 
     item.isClaimed = true;

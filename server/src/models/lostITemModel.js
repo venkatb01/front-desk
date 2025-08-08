@@ -13,13 +13,16 @@ const lostItemSchema = new mongoose.Schema(
     },
     foundBy: {
       type: String,
-      required: true,
+
     },
     isClaimed: {
       type: Boolean,
       default: false,
     },
-    claimedBy: String,
+    claimedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Guest'
+    },
     claimedDate: Date,
 
     room: {

@@ -8,11 +8,7 @@ const {
 
 
 router.post("/:roomId", createRequest);
-
-
 router.put("/:roomId/:requestId", updateRequestStatus);
-
-
 router.get("/:roomId", getRequests);
 
 module.exports = router;

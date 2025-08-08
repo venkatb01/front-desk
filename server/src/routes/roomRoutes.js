@@ -4,16 +4,18 @@ const {
   getAllRooms,
   updateRoomStatus,
   addHousekeepingTask,
-  reportMaintenance
+  reportMaintenance,
+  addRoom
 } = require("../controllers/roomController.js");
 
 
 router.get("/", getAllRooms);
 
+router.post("/addRoom",addRoom);
 router.put("/status/:roomId", updateRoomStatus);
 
 router.post("/housekeeping/:roomId", addHousekeepingTask);
 
-router.post("/maintenance/:roomId", reportMaintenance);
+router.post("/:roomId/report-maintenance", reportMaintenance);
 
 module.exports = router;

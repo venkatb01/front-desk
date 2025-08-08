@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const inventoryController = require("../controllers/inventoryController");
+const {addItem,getAllItems,getItemById,updateItem,deleteItem,decreaseQuantity,getItemsByCategory}= require("../controllers/inventoryController");
 
-router.post("/inventory", inventoryController.addItem);
-router.get("/inventory", inventoryController.getAllItems);
-router.get("/inventory/:id", inventoryController.getItemById);
-router.put("/inventory/:id", inventoryController.updateItem);
-router.delete("/inventory/:id", inventoryController.deleteItem);
-router.get("/inventory/category/:category", inventoryController.getItemsByCategory);
-router.patch("/inventory/:id/decrease", inventoryController.decreaseQuantity);
+router.post("/", addItem);
+router.get("/", getAllItems);
+router.get("/:id", getItemById);
+router.put("/:id",updateItem);
+router.delete("/:id", deleteItem);
+router.get("/category/:category",getItemsByCategory);
+router.patch("/:id/decrease", decreaseQuantity);
 
 module.exports = router;

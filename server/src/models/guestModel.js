@@ -54,7 +54,7 @@ const guestSchema = new mongoose.Schema({
   isCheckedOut: { type: Boolean, default: false }
 },
  folio: [{
-    date: String, // use ISO string "YYYY-MM-DD"
+    date: String, 
     description: String,
     amount: Number,
     type: {
