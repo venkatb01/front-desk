@@ -202,7 +202,9 @@ exports.getGuestDetails=async(req,res)=>{
   try{
      const {guestId}=req.params;
      const guest=await Guest.find({_id:guestId});
-     return res.status
+     return res.status(200).json({
+      success:false,guest
+     })
   }catch(error){
     return res.status(500).json({
       success:false,

@@ -43,6 +43,13 @@ const roomSchema = new mongoose.Schema({
     required: function () {
       return this.status === 'Occupied';
     }
+  },
+  capacity:{
+    type:Number,
+  },
+  category:{
+    type:String,
+    enum:['standard', 'deluxe', 'premium'],
   }
 }, { timestamps: true });
 
