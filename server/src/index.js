@@ -12,8 +12,10 @@ const roomRouter = require("./routes/roomRoutes.js");
 const maintenanceRouter=require("./routes/maintenanceRoutes.js");
 const lostItemRouter=require("./routes/lostItemRoutes.js");
 const inventoryRouter=require("./routes/inventoryRoutes.js");
-const housekeepingstaffRouter=require("./routes/houseKeepingStaffRoutes.js")
-const housekeepingtaskRouter=require("./routes/houseKeepingTasks.js")
+const housekeepingstaffRouter=require("./routes/houseKeepingStaffRoutes.js");
+const roomTypeRoutes =require('./routes/roomTypeRoutes.js');
+const roomRateRoutes =require('./routes/rateRoutes.js');
+
 const app=express();
 const PORT=process.env.PORT;
 
@@ -41,6 +43,9 @@ app.use("/api/room/maintenance",maintenanceRouter);
 app.use("/api/lost/",lostItemRouter);
 app.use("/api/inventory",inventoryRouter);
 app.use("/api/housekeepingstaff",housekeepingstaffRouter)
+app.use('/api/room-types',roomTypeRoutes);
+app.use('/api/room-rates',roomRateRoutes)
+
 app.use("/api/housekeepingtask",housekeepingtaskRouter);
 
 

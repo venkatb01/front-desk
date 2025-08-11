@@ -99,6 +99,63 @@ exports.reportMaintenance = async (req, res) => {
 };
 
 
+
+
+
+
+
+// const Room = require('../models/Room');
+
+// exports.createRoom = async (req, res) => {
+//   try {
+//     const room = new Room({ ...req.body, createdBy: req.user._id });
+//     const saved = await room.save();
+//     res.status(201).json(saved);
+//   } catch (err) {
+//     res.status(400).json({ error: err.message });
+//   }
+// };
+
+// exports.getAllRooms = async (req, res) => {
+//   try {
+//     const rooms = await Room.find().populate('roomType');
+//     res.status(200).json(rooms);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+// exports.getRoomById = async (req, res) => {
+//   try {
+//     const room = await Room.findById(req.params.id).populate('roomType');
+//     if (!room) return res.status(404).json({ message: 'Room not found' });
+//     res.status(200).json(room);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+// exports.updateRoom = async (req, res) => {
+//   try {
+//     const updated = await Room.findByIdAndUpdate(req.params.id, { ...req.body, modifiedBy: req.user._id }, { new: true });
+//     if (!updated) return res.status(404).json({ message: 'Room not found' });
+//     res.status(200).json(updated);
+//   } catch (err) {
+//     res.status(400).json({ error: err.message });
+//   }
+// };
+
+// exports.deleteRoom = async (req, res) => {
+//   try {
+//     const deleted = await Room.findByIdAndDelete(req.params.id);
+//     if (!deleted) return res.status(404).json({ message: 'Room not found' });
+//     res.status(200).json({ message: 'Room deleted successfully' });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+
 exports.getRoomStatus=async (req,res)=>{
   try{
     const {roomId}=req.params;
