@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Lock, Hotel } from 'lucide-react';
-
+import { toast } from 'react-toastify';
+import { useAppContext } from '../../../context/AppContext';
 
 const LoginPage = () => {
-
+  const {axios}=useAppContext();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -11,7 +12,6 @@ const LoginPage = () => {
   });
 
   const handleInputChange = (e) => {
-    console.log(e.target.value)
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -24,6 +24,7 @@ const LoginPage = () => {
       const {data} = await axios.post(`/api/auth/login`, formData);
       if(data.success){
         toast.success(data.message);
+        localStorage.setItem("token",token);
       }else{
         toast.error(data.message);
       }

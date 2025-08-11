@@ -4,6 +4,7 @@ const HousekeepingTask = require('../models/houseKeepingTaskModel.js'); // Adjus
 
 const mongoose = require('mongoose');
 
+
 exports.addStaff = async (req, res) => {
   try {
     const staff = await HousekeepingStaff.create(req.body);
@@ -39,7 +40,7 @@ exports.getPerformance = async (req, res) => {
     if (!staff) {
       return res.status(404).json({ success: false, message: "Staff not found" });
     }
-
+    
     const tasks = await HousekeepingTask.find({ assignedTo: staff._id });
 
     const completed = tasks.filter(task => task.status === 'Completed').length;

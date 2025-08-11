@@ -35,7 +35,7 @@ function App() {
           <Route path="reservations" element={<ReservationsPage />} />
       </Route>
 
-      {/* Admin Routes */}
+
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="reservations" />} />
         <Route path="guests" element={<GuestsPage />} />

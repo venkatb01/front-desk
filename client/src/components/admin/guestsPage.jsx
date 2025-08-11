@@ -13,113 +13,33 @@ import {
   MapPin,
   User
 } from 'lucide-react';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useAppContext } from '../../context/AppContext';
 
 const GuestsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGuests, setSelectedGuests] = useState([]);
 
-  const [guests] = useState([
-    {
-      id: 1,
-      name: 'Charlotte Clark',
-      email: 'charlotte@gmail.com',
-      phone: '-',
-      bookingNumbers: [
-        'BDC-5d017fef-80b6-46a2-b540-0319821a5ee0-2',
-      ],
-      totalBookings: 4,
-      lastStay: '2024-03-15',
-      totalSpent: 1250,
-      vipStatus: false,
-      nationality: 'United Kingdom',
-      joinDate: '2023-01-15',
-      preferences: {
-        roomType: 'Deluxe',
-        bedType: 'King',
-        floor: 'High'
-      }
-    },
-    {
-      id: 2,
-      name: 'William Smith',
-      email: 'smith452@outlook.com',
-      phone: '+1 (555) 123-4567',
-      bookingNumbers: [
-        'BDC-38760e03-4a4a-46a9-9f05-4c6c41a2248f',
-      ],
-      totalBookings: 2,
-      lastStay: '2024-02-20',
-      totalSpent: 890,
-      vipStatus: true,
-      nationality: 'United States',
-      joinDate: '2023-06-10',
-      preferences: {
-        roomType: 'Suite',
-        bedType: 'Queen',
-        floor: 'Any'
-      }
-    },
-    {
-      id: 3,
-      name: 'Cristine Moore',
-      email: 'christine.moore@hotmail.com',
-      phone: '+44 20 7123 4567',
-      bookingNumbers: [
-        'BDC-3ca00666-87fe-48e5-86a6-63dabf62216d',
-      ],
-      totalBookings: 10,
-      lastStay: '2024-01-08',
-      totalSpent: 3450,
-      vipStatus: true,
-      nationality: 'Canada',
-      joinDate: '2022-03-22',
-      preferences: {
-        roomType: 'Executive Suite',
-        bedType: 'King',
-        floor: 'High'
-      }
-    },
-    {
-      id: 4,
-      name: 'Mia Davis',
-      email: 'M.Davis@gmail.com',
-      phone: '-',
-      bookingNumbers: [
-        'BDC-3d9d3bcb-5401-41bd-8253-099cef99a55e',
-      ],
-      totalBookings: 8,
-      lastStay: '2023-12-15',
-      totalSpent: 2100,
-      vipStatus: false,
-      nationality: 'Australia',
-      joinDate: '2022-09-08',
-      preferences: {
-        roomType: 'Standard',
-        bedType: 'Double',
-        floor: 'Low'
-      }
-    },
-    {
-      id: 5,
-      name: 'James Wilson',
-      email: 'j.wilson@business.com',
-      phone: '+1 (555) 987-6543',
-      bookingNumbers: [
-        'BDC-7e8f9a0b-1c2d-3e4f-5a6b-7c8d9e0f1a2b',
-      ],
-      totalBookings: 15,
-      lastStay: '2024-03-05',
-      totalSpent: 4800,
-      vipStatus: true,
-      nationality: 'United States',
-      joinDate: '2021-11-12',
-      preferences: {
-        roomType: 'Business Suite',
-        bedType: 'King',
-        floor: 'High'
-      }
+  const [guests,setGuests] = useState([]);  
+  const {axios}=useAppContext();
+
+  useEffect(()=>{
+    fetchAllGuests();
+  },[]);
+
+  const fetchAllGuests=async()=>{
+    try{
+       const {data}=await axios.get("/api/guest/allguests");
+       if(data.success){
+         setGuests(data.guests);
+       }else{
+        toast.error(da.message);
+       }
+    }catch(error){
+      toast.error(error.message);
     }
-  ]);
+  }
 
   const filteredGuests = guests.filter(guest => 
     guest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -154,12 +74,11 @@ const GuestsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header Section */}
+
       <div className="bg-gray-700 text-white p-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-center mb-8">Find a guest</h1>
           
-          {/* Search Bar */}
           <div className="flex items-center justify-center mb-6">
             <div className="relative w-full max-w-2xl">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -174,8 +93,7 @@ const GuestsPage = () => {
               />
             </div>
           </div>
-
-          {/* Export Button */}
+          
           <div className="flex justify-end">
             <button className="flex items-center space-x-2 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
               <Download className="w-4 h-4" />
@@ -254,12 +172,12 @@ const GuestsPage = () => {
                           {guest.name}
                         </button>
                         <div className="flex items-center space-x-2 mt-1">
-                          {guest.vipStatus && (
+                          {/* {guest.vipStatus && (
                             <span className="flex items-center space-x-1 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
                               <Star className="w-3 h-3" />
                               <span>VIP</span>
                             </span>
-                          )}
+                          )} */}
                           <span className="text-xs text-gray-500 flex items-center space-x-1">
                             <MapPin className="w-3 h-3" />
                             <span>{guest.nationality}</span>
@@ -298,11 +216,11 @@ const GuestsPage = () => {
                   {/* Booking Numbers */}
                   <div className="col-span-3">
                     <div className="space-y-1">
-                      {guest.bookingNumbers.slice(0, 1).map((booking, index) => (
+                      {/* {guest.bookingNumbers.slice(0, 1).map((booking, index) => (
                         <div key={index} className="text-blue-600 font-mono text-xs break-all">
                           {booking}
                         </div>
-                      ))}
+                      ))} */}
                       {guest.totalBookings > 1 && (
                         <button className="text-blue-600 hover:text-blue-700 text-xs transition-colors">
                           (+{guest.totalBookings - 1} more)
@@ -319,15 +237,15 @@ const GuestsPage = () => {
                   {/* Status */}
                   <div className="col-span-1">
                     <div className="space-y-1">
-                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                      {/* <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                         guest.vipStatus 
                           ? 'bg-yellow-100 text-yellow-800' 
                           : 'bg-green-100 text-green-800'
                       }`}>
                         {guest.vipStatus ? 'VIP Guest' : 'Regular'}
-                      </div>
+                      </div> */}
                       <div className="text-xs text-gray-500">
-                        {guest.preferences.roomType}
+                        {guest.roomPreferences.bedType}
                       </div>
                     </div>
                   </div>
@@ -349,9 +267,9 @@ const GuestsPage = () => {
                     <div>
                       <span className="font-medium text-gray-700">Preferences:</span>
                       <div className="text-gray-600 mt-1">
-                        <div>Room: {guest.preferences.roomType}</div>
-                        <div>Bed: {guest.preferences.bedType}</div>
-                        <div>Floor: {guest.preferences.floor}</div>
+                        {/* <div>Room: {guest.preferences.roomType}</div> */}
+                        <div>Bed: {guest. roomPreferences.bedType}</div>
+                        <div>Floor: {guest. roomPreferences.floor}</div>
                       </div>
                     </div>
                     <div>

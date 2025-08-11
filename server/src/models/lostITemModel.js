@@ -13,12 +13,12 @@ const lostItemSchema = new mongoose.Schema(
     },
     foundBy: {
       type: String,
-
     },
     isClaimed: {
       type: Boolean,
       default: false,
     },
+
     claimedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Guest'

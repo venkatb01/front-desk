@@ -1,5 +1,8 @@
 require("dotenv").config();
 const express=require("express");
+const fs=require("fs");
+const path=require("path");
+const morgan=require("morgan");
 const cors=require("cors");
 const connectDB = require("./utils/db");
 const guestRouter = require("./routes/guestRoutes.js");
@@ -16,6 +19,14 @@ const PORT=process.env.PORT;
 
 app.use(express.json());
 
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: 'a' }
+);
+
+app.use(morgan('combined', { stream: accessLogStream }))
+
+
 app.use(cors({
     origin:["http://localhost:5173","https://front-desk-fx1y.onrender.com"]
 }));
@@ -31,6 +42,8 @@ app.use("/api/lost/",lostItemRouter);
 app.use("/api/inventory",inventoryRouter);
 app.use("/api/housekeepingstaff",housekeepingstaffRouter)
 app.use("/api/housekeepingtask",housekeepingtaskRouter);
+
+
 
 app.listen(PORT,()=>{
     console.log(`Server started running at http://localhost:${PORT}`)

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { User, Mail, Phone, Calendar, MapPin, CreditCard, Bed, Users, Hotel } from 'lucide-react';
-
+import { useAppContext } from '../../../context/AppContext';
+import { toast } from 'react-toastify';
 const GuestRegisterPage = () => {
+  const {axios}=useAppContext();
   const [formData, setFormData] = useState({
     
     name: '',
@@ -32,21 +34,12 @@ const GuestRegisterPage = () => {
       smoking: false,
       floorPreference: '',
       view: ''
-    },
-    
-    
-    references: [{
-      name: '',
-      contact: '',
-      relation: ''
-    }],
-    
+    },  
     vipStatus: false
   });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(name)
     
     if (name.includes('.')) {
       const keys = name.split('.');
@@ -77,15 +70,26 @@ const GuestRegisterPage = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Guest Registration Data:', formData);
-    alert('Guest registered successfully! Check console for data.');
+  const handleSubmit = async() => {
+     try{
+        const response=await axios.post("/api/guest/addGuest/",{...formData});
+        const data=response.data;
+        if(data.success){
+          toast.success(data.message);
+        }else{
+          toast.error(data.message);
+        }
+     }catch(error){
+        console.log(error);
+        toast.error(error.message);
+     };
+     
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
-        {/* Header */}
+        
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <div className="bg-blue-600 p-3 rounded-full">
@@ -96,11 +100,11 @@ const GuestRegisterPage = () => {
           <p className="text-gray-600">Register new guest for hotel management system</p>
         </div>
 
-        {/* Registration Form */}
+        
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="space-y-8">
             
-            {/* Personal Information Section */}
+            
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <User className="w-5 h-5 mr-2 text-blue-600" />
@@ -227,11 +231,10 @@ const GuestRegisterPage = () => {
               </div>
             </div>
 
-            {/* Address Section */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <MapPin className="w-5 h-5 mr-2 text-blue-600" />
-                Address Information
+                  Address Information
               </h3>
               
               <div className="grid grid-cols-1 gap-4">
@@ -450,89 +453,6 @@ const GuestRegisterPage = () => {
                     <option value="garden">Garden View</option>
                     <option value="mountain">Mountain View</option>
                   </select>
-                </div>
-
-                {/* Smoking */}
-                <div className="flex items-center mt-8">
-                  <input
-                    id="roomPreferences.smoking"
-                    name="roomPreferences.smoking"
-                    type="checkbox"
-                    checked={formData.roomPreferences.smoking}
-                    onChange={handleInputChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="roomPreferences.smoking" className="ml-2 text-sm font-medium text-gray-700">
-                    Smoking Room Preferred
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Emergency Reference Section */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Users className="w-5 h-5 mr-2 text-blue-600" />
-                Emergency Reference
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Reference Name */}
-                <div>
-                  <label htmlFor="references[0].name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Reference Name
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      id="references[0].name"
-                      name="references[0].name"
-                      type="text"
-                      value={formData.references[0].name}
-                      onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 text-black rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Enter reference name"
-                    />
-                  </div>
-                </div>
-
-                {/* Reference Contact */}
-                <div>
-                  <label htmlFor="references[0].contact" className="block text-sm font-medium text-gray-700 mb-2">
-                    Reference Contact
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      id="references[0].contact"
-                      name="references[0].contact"
-                      type="tel"
-                      value={formData.references[0].contact}
-                      onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 text-black rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Enter contact number"
-                    />
-                  </div>
-                </div>
-
-                {/* Relation */}
-                <div className="md:col-span-2">
-                  <label htmlFor="references[0].relation" className="block text-sm font-medium text-gray-700 mb-2">
-                    Relation
-                  </label>
-                  <input
-                    id="references[0].relation"
-                    name="references[0].relation"
-                    type="text"
-                    value={formData.references[0].relation}
-                    onChange={handleInputChange}
-                    className="w-full py-3 px-4 border border-gray-300 rounded-xl text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                    placeholder="e.g., Family, Friend, Colleague"
-                  />
                 </div>
               </div>
             </div>

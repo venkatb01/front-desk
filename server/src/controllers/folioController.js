@@ -44,7 +44,7 @@ exports.generateBill = async (req, res) => {
       total += entry.type === 'debit' ? entry.amount : -entry.amount;
     });
 
-    // Calculate stay charges
+    
     const stay = guest.currentStay;
     if (!stay || !stay.checkInDate || !stay.expectedCheckOutDate) {
       return res.status(400).json({ success: false, message: 'Current stay data missing' });
@@ -81,21 +81,25 @@ exports.recordPayment = async (req, res) => {
     const guest = await Guest.findById(guestId);
     if (!guest) return res.status(404).json({ success: false, message: 'Guest not found' });
 
+
     const paymentEntry = {
       date: new Date().toISOString().split('T')[0],
       description: `Final payment via ${paymentMethod}`,
       amount: amountPaid,
       type: 'credit'
     };
+      
 
     guest.folio.push(paymentEntry);
     guest.currentStay.isCheckedOut = true;
+
     guest.stayHistory.push({
       checkInDate: guest.currentStay.checkInDate,
       checkOutDate: new Date(),
       roomNumber: guest.currentStay.roomNumber,
       amountPaid,
     });
+    
     guest.currentStay = {};
 
     await guest.save();
@@ -107,45 +111,45 @@ exports.recordPayment = async (req, res) => {
 
 
 
-// // controllers/nightAuditController.js
-// const performNightAudit = async () => {
-//   const guests = await Guest.find({
-//     'currentStay.isCheckedOut': false,
-//     'currentStay.checkInDate': { $exists: true },
-//   });
+const performNightAudit = async () => {
+  const guests = await Guest.find({
+    'currentStay.isCheckedOut': false,
+    'currentStay.checkInDate': { $exists: true },
+  });
   
-//   for (const guest of guests) {
-//     const today = new Date().toISOString().slice(0, 10);
+  for (const guest of guests) {
+    const today = new Date().toISOString().slice(0, 10);
 
-//     const chargeExists = guest.folio?.some(entry => entry.date === today && entry.description === 'Room Charge');
-//     if (chargeExists) continue;
+    const chargeExists = guest.folio?.some(entry => entry.date === today && entry.description === 'Room Charge');
 
-//     const rate = guest.currentStay?.ratePerNight || 0;
+    if (chargeExists) continue;
+    const rate = guest.currentStay?.ratePerNight || 0;
+    const folioEntry = {
+      date: today,
+      description: 'Room Charge',
+      amount: rate,
+      type: 'debit'
+    };
 
-//     const folioEntry = {
-//       date: today,
-//       description: 'Room Charge',
-//       amount: rate,
-//       type: 'debit'
-//     };
+    guest.folio = guest.folio || [];
+    guest.folio.push(folioEntry);
+    await guest.save();
+  }
+};
 
-//     guest.folio = guest.folio || [];
-//     guest.folio.push(folioEntry);
-//     await guest.save();
-//   }
-// };
 
-// exports.runNightAudit = async (req, res) => {
-//   try {
-//     await performNightAudit();
-//     res.status(200).json({ success: true, message: "Night audit completed" });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
+exports.runNightAudit = async (req, res) => {
+  try {
+    await performNightAudit();
+    res.status(200).json({ success: true, message: "Night audit completed" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
-// // controllers/shiftController.js
-// const ShiftLog = require('../models/shiftLogModel');
+
+
+
 
 // exports.recordShiftHandover = async (req, res) => {
 //   try {

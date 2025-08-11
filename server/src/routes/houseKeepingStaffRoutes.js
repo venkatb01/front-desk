@@ -2,7 +2,7 @@ const express = require("express");
 const { addStaff, getAllStaff, updateTaskStatus, getPerformance } = require("../controllers/houseKeepingStaffController.js");
 const verifyToken = require("../middlewares/verifyToken.js");
 const router = express.Router();
-
+const transporter=require("../utils/nodemailer.js")
 //tasks are associated with room we assign task to staff by using taskid when we click on room=>tasks=>staff assign
 
 router.post("/add",verifyToken,addStaff);

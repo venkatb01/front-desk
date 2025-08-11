@@ -16,7 +16,7 @@ import {
 const Header = ({ userInfo = { name: 'John Doe', role: 'Front Desk Manager', avatar: null } }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [notifications] = useState(3); // Mock notification count
+  const [notifications] = useState(3);
 
   const navigation = [
     { name: 'Dashboard', href: '#', icon: Calendar },

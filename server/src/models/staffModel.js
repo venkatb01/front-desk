@@ -33,7 +33,7 @@ const StaffSchema = new Schema({
     enum: ['admin', 'receptionist', 'housekeeping',"front-desk"],
     required: true
   },
-}, {
+},{
   timestamps: true
 });
 

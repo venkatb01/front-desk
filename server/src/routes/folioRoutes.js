@@ -12,4 +12,5 @@ folioRouter.get("/:guestId", verifyToken, getFolio);
 folioRouter.get("/generateBill/:guestId",verifyToken,generateBill);
 folioRouter.get("/finalpayment",verifyToken,recordPayment);
 
+
 module.exports = folioRouter;

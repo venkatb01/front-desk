@@ -1,15 +1,13 @@
 const Room = require('../models/roomModel.js'); 
 const HousekeepingStaff=require("../models/houseKeepingStaffModel.js")
+
 exports.addRoom = async (req, res) => {
   try {
     const { roomNumber, status, inventory } = req.body;
-
-   
     const existingRoom = await Room.findOne({ roomNumber });
     if (existingRoom) {
       return res.status(400).json({ success: false, message: "Room number already exists" });
     }
-
     const newRoom = new Room({
       roomNumber,
       status,           
@@ -27,8 +25,11 @@ exports.addRoom = async (req, res) => {
 exports.getAllRooms = async (req, res) => {
   try {
     const rooms = await Room.find();
-    res.json(rooms);
-  } catch (err) {
+    res.status(200).json({
+      success:true,
+      message:"Rooms retrieved successfully"
+    });
+  } catch (error) {
     res.status(500).json({success:false,message:error.message});
   }
 };
@@ -96,3 +97,27 @@ exports.reportMaintenance = async (req, res) => {
     res.status(500).json({success:false,message:error.message});
   }
 };
+
+
+exports.getRoomStatus=async (req,res)=>{
+  try{
+    const {roomId}=req.params;
+    const room=await Room.findOne({_id:roomId});
+    if(room && room.status){
+      return res.status(200).json({
+        success:true,
+        status:room.status
+      });
+    }else{
+      return res.status(400).json({
+        success:false,
+        message:"Room not found"
+      })
+    }
+  }catch(error){
+    return res.status(500).json({
+      success:false,
+      message:error.message
+    })
+  }
+}
