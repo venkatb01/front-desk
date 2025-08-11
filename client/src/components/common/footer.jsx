@@ -98,7 +98,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-sm">
-              &copy; {currentYear} HotelManager. All rights reserved.
+              &copy; {currentYear} Front Desk. All rights reserved.
             </div>
             <div className="flex space-x-6 text-sm">
               <button className="text-gray-400 hover:text-white transition-colors">

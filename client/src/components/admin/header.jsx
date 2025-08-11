@@ -10,19 +10,23 @@ import {
   Calendar,
   Users,
   Bed,
-  ClipboardList
+  ClipboardList,
+  LogIn
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AppContext';
 
 const Header = ({ userInfo = { name: 'John Doe', role: 'Front Desk Manager', avatar: null } }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notifications] = useState(3);
+  const navigate = useNavigate()
+  const {user} = useAuth();
 
   const navigation = [
-    { name: 'Dashboard', href: '#', icon: Calendar },
-    { name: 'Guests', href: '#', icon: Users },
-    { name: 'Rooms', href: '#', icon: Bed },
-    { name: 'Reservations', href: '#', icon: ClipboardList },
+    { name: 'Reservations', href: '/admin', icon: ClipboardList },
+    { name: 'Guests', href: '/admin/guests', icon: Users },
+    { name: 'Rooms', href: '/rooms', icon: Bed },
   ];
 
   return (
@@ -36,7 +40,7 @@ const Header = ({ userInfo = { name: 'John Doe', role: 'Front Desk Manager', ava
                 <Hotel className="w-6 h-6 text-white" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-gray-900">HotelManager</h1>
+                <h1 className="text-xl font-bold text-gray-900">Front Desk</h1>
                 <p className="text-xs text-gray-500">Property Management</p>
               </div>
             </div>
@@ -48,6 +52,7 @@ const Header = ({ userInfo = { name: 'John Doe', role: 'Front Desk Manager', ava
                 return (
                   <button
                     key={item.name}
+                    onClick={() => navigate(item.href)}
                     className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
                   >
                     <IconComponent className="w-4 h-4" />
@@ -101,40 +106,63 @@ const Header = ({ userInfo = { name: 'John Doe', role: 'Front Desk Manager', ava
                     )}
                   </div>
                   <div className="hidden sm:block text-left">
-                    <p className="text-sm font-medium text-gray-900">{userInfo.name}</p>
-                    <p className="text-xs text-gray-500">{userInfo.role}</p>
+                <p className="text-sm font-medium text-gray-900">{user?.firstName}</p>
+                <p className="text-xs text-gray-500">{user?.role}</p>
+
                   </div>
                 </div>
               </button>
 
               {/* Dropdown Menu */}
-              {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2">
+           {isProfileOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2">
+              {user ? (
+                <>
                   <div className="px-4 py-3 border-b border-gray-100">
-                    <p className="text-sm font-medium text-gray-900">{userInfo.name}</p>
-                    <p className="text-xs text-gray-500">{userInfo.role}</p>
+                    <p className="text-sm font-medium text-gray-900">{user.firstName}</p>
+                    <p className="text-xs text-gray-500">{user.role}</p>
                   </div>
-                  
+
                   <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-3">
                     <User className="w-4 h-4" />
                     <span>My Profile</span>
                   </button>
-                  
+
                   <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-3">
                     <Settings className="w-4 h-4" />
                     <span>Settings</span>
                   </button>
-                  
+
                   <div className="border-t border-gray-100 mt-2 pt-2">
                     <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-3">
                       <LogOut className="w-4 h-4" />
                       <span>Sign Out</span>
                     </button>
                   </div>
-                </div>
+                </>
+              ) : (
+                <>
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-900">Guest</p>
+                    <p className="text-xs text-gray-500">Not logged in</p>
+                  </div>
+
+                <div className="border-t border-gray-100 mt-2 pt-2">
+                    <button className="w-full text-left px-4 py-2 text-sm text-black hover:bg-red-50 flex items-center space-x-3" onClick={navigate("/login")}>
+                     <LogIn className="w-4 h-4" />
+                      <span className='' >Sign In</span>
+                    </button>
+                  </div>
+                </>
               )}
             </div>
+          )}
+
           </div>
+
+          </div>
+
+
         </div>
 
         {/* Mobile Navigation */}
@@ -149,7 +177,7 @@ const Header = ({ userInfo = { name: 'John Doe', role: 'Front Desk Manager', ava
                     className="w-full flex items-center space-x-3 px-3 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
                   >
                     <IconComponent className="w-5 h-5" />
-                    <span className="font-medium">{item.name}</span>
+                    <span className="font-medium">{user?.name}</span>
                   </button>
                 );
               })}

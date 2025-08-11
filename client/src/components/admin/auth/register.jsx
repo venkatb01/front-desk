@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Mail, Lock, Phone, Hotel, UserCheck, Axis3DIcon } from 'lucide-react';
 import { useContext } from 'react';
-import {useAppContext} from "../../../context/AppContext"
 import { toast } from 'react-toastify';
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
