@@ -29,7 +29,7 @@ const folioSchema = new mongoose.Schema(
     enum:["debit","credit"]
   }
 },
- {
+{
   timestamps: true
 });
 

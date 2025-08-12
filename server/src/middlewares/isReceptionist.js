@@ -12,7 +12,7 @@ async function isReceptionist(req, res, next) {
         message: "No token provided",
       });
     }
-
+    
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(decoded)
     req.userId = decoded.userId;

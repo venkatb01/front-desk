@@ -46,15 +46,7 @@ const rateSchema = new mongoose.Schema({
 
   isActive: { type: Boolean, default: true },
 
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'staff',
-    required: true
-  },
-  modifiedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'staff'
-  }
+  
 }, { timestamps: true });
 
 rateSchema.index({ roomType: 1, rateCode: 1, validFrom: 1, validTo: 1 });

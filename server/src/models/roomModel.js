@@ -50,37 +50,14 @@ const roomSchema = new mongoose.Schema({
   category:{
     type:String,
     enum:['standard', 'deluxe', 'premium'],
+  },
+  bedConfigurations:{
+    type:String,
+    enum:['single', 'double', 'queen', 'king'],
+  },
+  image:{
+    type:String,
   }
 }, { timestamps: true });
-
-
-
-const roomSchemaa = new mongoose.Schema({
-  roomNumber: { type: String, required: true, unique: true },
-  roomType: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'RoomType',
-    required: true
-  },
-  floor: Number,
-  status: {
-    type: String,
-    enum: ['available', 'occupied', 'maintenance', 'cleaning'],
-    default: 'available'
-  },
-  isActive: { type: Boolean, default: true },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'staff',
-    required: true
-  },
-  modifiedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'staff'
-  }
-}, { timestamps: true });
-
-// module.exports = mongoose.model('Room', roomSchema);
-
 
 module.exports = mongoose.model("Room", roomSchema);

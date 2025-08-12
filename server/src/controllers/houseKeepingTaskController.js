@@ -20,10 +20,6 @@ exports.addTask = async (req, res) => {
 };
 
 
-
-
-
-
 exports.updateTaskStatus = async (req, res) => {
   const { staffId, taskId } = req.params;
   const { status } = req.body;

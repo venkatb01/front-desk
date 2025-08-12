@@ -18,13 +18,11 @@ const lostItemSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
     claimedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Guest'
     },
     claimedDate: Date,
-
     room: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Room",
@@ -38,5 +36,7 @@ const lostItemSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
 
 module.exports = mongoose.model("LostItem", lostItemSchema);

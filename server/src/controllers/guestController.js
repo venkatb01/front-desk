@@ -9,6 +9,7 @@ exports.registerGuest = async (req, res) => {
     
     const mailOptions = {
       to: email,
+      from:process.env.NM_USER,
       subject: "Registered Successfully",
       text: `Thanks for becoming member of our organisation.`
     }; 
@@ -17,7 +18,7 @@ exports.registerGuest = async (req, res) => {
     
     return res.status(201).json({ success: true, data: guest });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error});
+    return res.status(500).json({ success: false, message: error.message});
   }
 };
 
@@ -52,6 +53,8 @@ exports.bookRoom = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
 
 
 exports.getAllGuests = async (req, res) => {

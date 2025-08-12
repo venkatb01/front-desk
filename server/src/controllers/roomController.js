@@ -1,19 +1,46 @@
 const Room = require('../models/roomModel.js'); 
 const HousekeepingStaff=require("../models/houseKeepingStaffModel.js")
-
+const imagekit=require("../utils/imagekit");
+const fs=require("fs");
 exports.addRoom = async (req, res) => {
   try {
-    const { roomNumber, status, inventory } = req.body;
+    const { roomNumber, status, inventory,category,bedConfigurations,capacity} = req.body;
     const existingRoom = await Room.findOne({ roomNumber });
+    const imageFile=req.file;
+    console.log(imageFile+"imagefile")
+    if(!roomNumber || !status || !inventory){
+       return res.status(400).json({
+        success:false,
+        message:"Missing required fields"
+       })
+    }
     if (existingRoom) {
       return res.status(400).json({ success: false, message: "Room number already exists" });
     }
+    const fileBuffer=fs.readFileSync(imageFile.path);
+        const response=await imagekit.upload({
+            file:fileBuffer,
+            fileName:imageFile.originalname,
+            folder:"/Rooms"
+        });
+        const optimizedImageUrl=imagekit.url({
+            path:response.filePath,
+            transformation:[
+                {quality:'auto'},
+                {format:'webp'},
+                {width:'600'},
+            ]
+        });
+    const image=optimizedImageUrl;
     const newRoom = new Room({
       roomNumber,
       status,           
-      inventory         
+      inventory,
+      image,
+      category,
+      bedConfigurations,
+      capacity     
     });
-
     await newRoom.save();
     res.status(201).json({ success: true, message: "Room added successfully", data: newRoom });
   } catch (error) {
@@ -27,7 +54,8 @@ exports.getAllRooms = async (req, res) => {
     const rooms = await Room.find();
     res.status(200).json({
       success:true,
-      message:"Rooms retrieved successfully"
+      message:"Rooms retrieved successfully",
+      rooms
     });
   } catch (error) {
     res.status(500).json({success:false,message:error.message});
@@ -48,15 +76,13 @@ exports.updateRoomStatus = async (req, res) => {
 };
 
 
-
 exports.addHousekeepingTask= async (req, res) => {
   try {
     const { roomId } = req.params;
     const { task, assignedTo, scheduledDate, notes } = req.body;
-
+    
     const room = await Room.findOne({ _id:roomId });
     if (!room) return res.status(404).json({ success: false, message: "Room not found" });
-
 
     room.housekeepingTasks.push({
       task,
@@ -100,60 +126,27 @@ exports.reportMaintenance = async (req, res) => {
 
 
 
+exports.getRoomById = async (req, res) => {
+  try {
+    const room = await Room.findById(req.params.id).populate('roomType');
+    if (!room) return res.status(404).json({ message: 'Room not found' });
+    res.status(200).json(room);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 
 
-
-// const Room = require('../models/Room');
-
-// exports.createRoom = async (req, res) => {
-//   try {
-//     const room = new Room({ ...req.body, createdBy: req.user._id });
-//     const saved = await room.save();
-//     res.status(201).json(saved);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// };
-
-// exports.getAllRooms = async (req, res) => {
-//   try {
-//     const rooms = await Room.find().populate('roomType');
-//     res.status(200).json(rooms);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
-
-// exports.getRoomById = async (req, res) => {
-//   try {
-//     const room = await Room.findById(req.params.id).populate('roomType');
-//     if (!room) return res.status(404).json({ message: 'Room not found' });
-//     res.status(200).json(room);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
-
-// exports.updateRoom = async (req, res) => {
-//   try {
-//     const updated = await Room.findByIdAndUpdate(req.params.id, { ...req.body, modifiedBy: req.user._id }, { new: true });
-//     if (!updated) return res.status(404).json({ message: 'Room not found' });
-//     res.status(200).json(updated);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// };
-
-// exports.deleteRoom = async (req, res) => {
-//   try {
-//     const deleted = await Room.findByIdAndDelete(req.params.id);
-//     if (!deleted) return res.status(404).json({ message: 'Room not found' });
-//     res.status(200).json({ message: 'Room deleted successfully' });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+exports.deleteRoom = async (req, res) => {
+  try {
+    const deleted = await Room.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Room not found' });
+    res.status(200).json({ message: 'Room deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 
 exports.getRoomStatus=async (req,res)=>{
@@ -177,4 +170,41 @@ exports.getRoomStatus=async (req,res)=>{
       message:error.message
     })
   }
+}
+
+
+exports.getBookings=async (req,res)=>{
+  try{
+     const bookings=await Room.find({status:occupied});
+     if(bookings){
+      return res.status(200).json({
+        success:true,
+        bookings
+      })
+     }
+  }catch(error){
+    return res.status(500).json({
+      success:false,
+      message:error.message
+    });
+  }
+}
+
+exports.resolveMaintenance=async (req,res)=>{
+  const {mid}=req.params;
+   try{
+      const room=await Room.maintenanceRequests.find({_id:mid});
+      maintenanceRequests.status="resolved";
+      await room.save();
+      
+      return res.status(500).json({
+        success:true,
+        message:"Maintenance issue status resolved"
+      })
+   }catch(error){
+    return res.status(500).json({
+      success:false,
+      message:error.message
+    })
+   }
 }

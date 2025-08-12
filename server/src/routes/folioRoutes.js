@@ -6,11 +6,10 @@ const folioRouter = express.Router();
 
 
 folioRouter.post("/add/:guestId", verifyToken, addFolioEntry);
-
-
 folioRouter.get("/:guestId", verifyToken, getFolio);
 folioRouter.get("/generateBill/:guestId",verifyToken,generateBill);
 folioRouter.get("/finalpayment",verifyToken,recordPayment);
+
 
 
 module.exports = folioRouter;
